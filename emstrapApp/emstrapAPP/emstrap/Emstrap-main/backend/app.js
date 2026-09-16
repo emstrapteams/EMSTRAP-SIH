@@ -17,6 +17,7 @@ import driverRoutes from "./src/routes/driver.route.js";
 import patientRoutes from "./src/routes/patient.route.js";
 import responderResponseRoutes from "./src/routes/responderResponse.route.js";
 import disasterAuthRoutes from "./src/routes/disasterAuth.route.js";
+import disasterDashboardRoutes from "./src/routes/disasterDashboard.route.js";
 import disasterWarningRoutes from "./src/routes/disasterWarning.route.js";
 import sachetRoutes from "./src/routes/sachet.route.js";
 
@@ -56,6 +57,7 @@ app.use(cookieParser());
 app.use("/api/emergency", emergencyRoutes);
 app.use("/api/disaster/emergency", disasterEmergencyRoutes);
 app.use("/api/disaster/response", responderResponseRoutes);
+app.use("/api/disaster/dashboard", disasterDashboardRoutes);
 app.use("/api/disaster/warnings", disasterWarningRoutes);
 app.use("/api/disaster/sachet", sachetRoutes);
 app.use("/api/disaster/auth", disasterAuthRoutes);
