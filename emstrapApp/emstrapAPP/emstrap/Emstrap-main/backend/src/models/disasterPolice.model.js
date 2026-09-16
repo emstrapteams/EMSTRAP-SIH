@@ -79,7 +79,7 @@ const disasterPoliceSchema = new mongoose.Schema(
     },
     {
         timestamps: true,
-        collection: "police"
+        collection: "polices"
     }
 );
 

@@ -1,24 +1,24 @@
 import mongoose from "mongoose";
 
-export const disasterDB = mongoose.createConnection(
+export const fullDisasterDB = mongoose.createConnection(
     process.env.MONGO_URI_FULL_DISASTER,
     {
         serverSelectionTimeoutMS: 10000,
     }
 );
 
-export const connectDisasterDB = async () => {
+export const connectFullDisasterDB = async () => {
     if (!process.env.MONGO_URI_FULL_DISASTER) {
         throw new Error(
             "MONGO_URI_FULL_DISASTER is not configured"
         );
     }
 
-    await disasterDB.asPromise();
+    await fullDisasterDB.asPromise();
 
     console.log(
-        "Disaster DB connected: EMSTRAP_FULL_DISASTER_DB"
+        "✅ Full Disaster DB connected: EMSTRAP_FULL_DISASTER_DB"
     );
 
-    return disasterDB;
+    return fullDisasterDB;
 };
