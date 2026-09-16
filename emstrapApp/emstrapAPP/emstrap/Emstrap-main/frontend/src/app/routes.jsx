@@ -35,6 +35,7 @@ const PoliceLayout = lazy(() => import("../pages/Police/PoliceLayout"));
 const PoliceDashboard = lazy(() => import("../pages/Police/PoliceDashboard"));
 const LiveMap = lazy(() => import("../pages/Police/LiveMap"));
 const PoliceSettings = lazy(() => import("../pages/Police/PoliceSettings"));
+const RescuePage = lazy(() => import("../pages/rescue/RescuePage"));
 
 function HomePage() {
   const { user, loading } = useAuth();
@@ -183,8 +184,7 @@ export default function AppRoutes() {
           <Route index element={<PoliceDashboard />} />
           <Route path="map" element={<LiveMap />} />
           <Route path="settings" element={<PoliceSettings />} />
-        </Route>
-      </Routes>
+        </Route>    <Route path="/rescue" element={<RescuePage />} />`r`n  </Routes>
     </Suspense>
   );
 }
