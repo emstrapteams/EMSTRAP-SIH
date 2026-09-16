@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useDisaster } from '../../context/DisasterContext';
 import {
   AlertTriangle,
@@ -120,7 +120,7 @@ export const IncidentsPage: React.FC = () => {
             <span className="text-[11px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200">
               Operations & Incident Command
             </span>
-            <span className="text-xs text-slate-500">Total Logged: {incidents.length} incidents</span>
+            <span className="text-xs text-slate-500">Total Logged: {incidents?.length ?? 0} incidents</span>
           </div>
           <h1 className="text-xl font-bold text-slate-900 tracking-tight">Emergency Incident Management</h1>
           <p className="text-xs text-slate-600 mt-1">
@@ -194,7 +194,7 @@ export const IncidentsPage: React.FC = () => {
 
       {/* Incidents List Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {filteredIncidents.length === 0 ? (
+        {filteredIncidents?.length ?? 0 === 0 ? (
           <div className="md:col-span-2 p-12 text-center bg-white rounded-lg border border-dashed border-slate-200">
             <AlertTriangle className="w-8 h-8 text-slate-400 mx-auto mb-2" />
             <p className="text-sm text-slate-600 font-medium">No incidents found matching criteria.</p>
@@ -253,7 +253,7 @@ export const IncidentsPage: React.FC = () => {
                   <div className="flex items-center gap-1.5 text-xs text-blue-700 mb-2">
                     <MapPin className="w-3.5 h-3.5 shrink-0" />
                     <span>{incident.location}</span>
-                    <span className="text-slate-300">•</span>
+                    <span className="text-slate-300">â€¢</span>
                     <span className="text-slate-500 font-mono text-[11px]">{incident.dateTime}</span>
                   </div>
 
@@ -272,11 +272,11 @@ export const IncidentsPage: React.FC = () => {
                     </div>
                   </div>
 
-                  {incident.requiredResources.length > 0 && (
+                  {(incident.requiredResources?.length ?? 0) > 0 && (
                     <div className="mb-3">
                       <span className="text-[10px] text-slate-500 block mb-1 font-medium">Required Resources:</span>
                       <div className="flex flex-wrap gap-1">
-                        {incident.requiredResources.map((res) => (
+                        {(incident.requiredResources ?? []).map((res) => (
                           <span
                             key={res}
                             className="text-[10px] px-1.5 py-0.5 rounded bg-slate-50 text-slate-600 border border-slate-200"
@@ -539,3 +539,6 @@ export const IncidentsPage: React.FC = () => {
     </div>
   );
 };
+
+
+

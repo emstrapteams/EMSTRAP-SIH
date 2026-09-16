@@ -1,16 +1,20 @@
 import mongoose from "mongoose";
 
+const disasterUri =
+    process.env.MONGO_URI_FULL_DISASTER ||
+    process.env.MONGO_URI_DISASTER;
+
 export const disasterDB = mongoose.createConnection(
-    process.env.MONGO_URI_FULL_DISASTER,
+    disasterUri,
     {
         serverSelectionTimeoutMS: 10000,
     }
 );
 
 export const connectDisasterDB = async () => {
-    if (!process.env.MONGO_URI_FULL_DISASTER) {
+    if (!disasterUri) {
         throw new Error(
-            "MONGO_URI_FULL_DISASTER is not configured"
+            "MONGO_URI_FULL_DISASTER or MONGO_URI_DISASTER is not configured"
         );
     }
 

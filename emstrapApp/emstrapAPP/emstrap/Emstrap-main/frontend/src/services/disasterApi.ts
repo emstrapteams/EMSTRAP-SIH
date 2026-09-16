@@ -18,7 +18,7 @@ function buildApiError(message: string, status?: number, body?: unknown): ApiErr
 export async function loginRescueTeam(identifier: string, password: string): Promise<RescueLoginResponse> {
   if (!API_BASE) throw buildApiError('VITE_API_URL is not configured', 0);
 
-  const url = `${API_BASE}/api/disaster/auth/login`;
+  const url = `${API_BASE}/disaster/auth/login`;
   try {
     const resp = await axios.post(url, { role: 'RESCUE_TEAM', identifier, password }, { headers: { 'Content-Type': 'application/json' } });
     return resp.data as RescueLoginResponse;
@@ -32,7 +32,7 @@ export async function loginRescueTeam(identifier: string, password: string): Pro
 
 export async function getRescueTeamDashboard(token: string): Promise<RescueTeamDashboardResponse> {
   if (!API_BASE) throw buildApiError('VITE_API_URL is not configured', 0);
-  const url = `${API_BASE}/api/disaster/dashboard/rescue-team`;
+  const url = `${API_BASE}/disaster/dashboard/rescue-team`;
   try {
     const resp = await axios.get(url, { headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' } });
     return resp.data as RescueTeamDashboardResponse;
@@ -45,3 +45,4 @@ export async function getRescueTeamDashboard(token: string): Promise<RescueTeamD
 }
 
 export default { loginRescueTeam, getRescueTeamDashboard };
+

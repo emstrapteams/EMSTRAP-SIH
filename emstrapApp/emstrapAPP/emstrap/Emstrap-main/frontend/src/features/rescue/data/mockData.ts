@@ -141,3 +141,77 @@ export const INITIAL_NOTIFICATIONS = [
     read: false,
   },
 ];
+
+
+export const KRISHNA_RIVER_COORDINATES: [number, number][] = [
+  [16.5200, 80.6100],
+  [16.5150, 80.6250],
+  [16.5100, 80.6400],
+  [16.5050, 80.6550],
+  [16.5000, 80.6700],
+];
+
+export const CANAL_NETWORKS: [number, number][][] = [
+  [
+    [16.5250, 80.6200],
+    [16.5150, 80.6350],
+    [16.5050, 80.6500],
+  ],
+  [
+    [16.5350, 80.6500],
+    [16.5250, 80.6650],
+    [16.5150, 80.6800],
+  ],
+];
+
+export const TRANSPORT_ARTERIALS: {
+  name: string;
+  coords: [number, number][];
+}[] = [
+  {
+    name: 'NH16 Evacuation Corridor',
+    coords: [
+      [16.5400, 80.6000],
+      [16.5250, 80.6200],
+      [16.5100, 80.6400],
+    ],
+  },
+  {
+    name: 'MG Road Emergency Corridor',
+    coords: [
+      [16.5100, 80.6250],
+      [16.5200, 80.6450],
+      [16.5300, 80.6600],
+    ],
+  },
+];
+
+export const PROJECTED_INUNDATION_POLYGON: [number, number][] = [
+  [16.5250, 80.6150],
+  [16.5350, 80.6350],
+  [16.5250, 80.6600],
+  [16.5000, 80.6650],
+  [16.4900, 80.6350],
+  [16.5000, 80.6150],
+];
+
+export const HIGH_RISK_POLYGON: [number, number][] = [
+  [16.5150, 80.6250],
+  [16.5250, 80.6400],
+  [16.5150, 80.6550],
+  [16.4950, 80.6500],
+  [16.4950, 80.6300],
+];
+
+export const MODERATE_RISK_POLYGON: [number, number][] = [
+  [16.5300, 80.6150],
+  [16.5400, 80.6400],
+  [16.5300, 80.6650],
+  [16.5000, 80.6700],
+  [16.4850, 80.6400],
+  [16.4950, 80.6150],
+];
+
+
+export const MAP_CENTER: [number, number] = [16.5062, 80.6480];
+export const DEFAULT_ZOOM = 12;
