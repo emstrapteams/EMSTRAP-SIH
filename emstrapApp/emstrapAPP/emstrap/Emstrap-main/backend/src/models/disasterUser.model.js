@@ -62,6 +62,12 @@ const disasterUserSchema = new mongoose.Schema(
             required: true
         },
 
+        districtCode: {
+            type: String,
+            default: null,
+            trim: true
+        },
+
         currentLocation: {
             latitude: {
                 type: Number

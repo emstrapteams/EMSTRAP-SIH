@@ -16,6 +16,10 @@ import privateDriverRoutes from "./src/routes/privateDriver.routes.js";
 import driverRoutes from "./src/routes/driver.route.js";
 import patientRoutes from "./src/routes/patient.route.js";
 import responderResponseRoutes from "./src/routes/responderResponse.route.js";
+import disasterAuthRoutes from "./src/routes/disasterAuth.route.js";
+import disasterWarningRoutes from "./src/routes/disasterWarning.route.js";
+import sachetRoutes from "./src/routes/sachet.route.js";
+
 const app = express();
 const allowedOrigins = [
   process.env.FRONTEND_URL,
@@ -52,6 +56,9 @@ app.use(cookieParser());
 app.use("/api/emergency", emergencyRoutes);
 app.use("/api/disaster/emergency", disasterEmergencyRoutes);
 app.use("/api/disaster/response", responderResponseRoutes);
+app.use("/api/disaster/warnings", disasterWarningRoutes);
+app.use("/api/disaster/sachet", sachetRoutes);
+app.use("/api/disaster/auth", disasterAuthRoutes);
 app.use("/api/patients", patientRoutes);
 app.use("/api/hospitals", hospitalRoutes);
 app.use("/auth", authRoutes);

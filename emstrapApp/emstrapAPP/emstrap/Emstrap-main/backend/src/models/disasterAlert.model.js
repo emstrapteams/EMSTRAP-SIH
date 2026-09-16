@@ -23,6 +23,10 @@ const disasterAlertSchema = new mongoose.Schema(
             type: String,
             required: true
         },
+        instructions: {
+            type: [String],
+            default: []
+        },
 
         disasterType: {
             type: String,
@@ -50,6 +54,23 @@ const disasterAlertSchema = new mongoose.Schema(
                 "RESPONDER"
             ],
             required: true
+        },
+
+        externalId: {
+            type: String,
+            default: null,
+            trim: true
+        },
+
+        areaName: {
+            type: String,
+            default: null,
+            trim: true
+        },
+
+        districtCodes: {
+            type: [String],
+            default: []
         },
 
         emergency: {
@@ -102,6 +123,10 @@ const disasterAlertSchema = new mongoose.Schema(
     }
 );
 
+disasterAlertSchema.index(
+    { externalId: 1 },
+    { unique: true, sparse: true }
+);
 const DisasterAlert =
     disasterDB.models.DisasterAlert ||
     disasterDB.model("DisasterAlert", disasterAlertSchema);

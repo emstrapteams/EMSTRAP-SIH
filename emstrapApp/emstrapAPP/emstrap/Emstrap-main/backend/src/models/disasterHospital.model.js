@@ -15,10 +15,20 @@ const disasterHospitalSchema = new mongoose.Schema(
             unique: true,
             trim: true
         },
+        password: {
+            type: String,
+            select: false
+        },
 
         address: {
             type: String,
             required: true
+        },
+
+        districtCode: {
+            type: String,
+            default: null,
+            trim: true
         },
 
         location: {

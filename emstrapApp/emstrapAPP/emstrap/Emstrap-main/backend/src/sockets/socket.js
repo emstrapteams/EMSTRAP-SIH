@@ -69,6 +69,14 @@ export const initSocket = (server) => {
     // Police joins police room
     socket.on("join_police", (data) => {
       socket.join("police");
+
+      if (data?.policeId) {
+        socket.join(`police_${data.policeId}`);
+        console.log(
+          `Police officer joined personal room: ${data.policeId}`
+        );
+      }
+
       console.log(`Police joined: ${socket.id}`);
     });
 
@@ -209,10 +217,23 @@ export const initSocket = (server) => {
       }
     });
 
-    socket.on("join_user", (data) => {
-      if (data.userId) {
-        socket.join(`user_${data.userId}`);
-        console.log(`User joined personal room: ${data.userId}`);
+    // Firefighter joins personal disaster-warning room
+    socket.on("join_firefighter", (data) => {
+      if (data?.firefighterId) {
+        socket.join(`firefighter_${data.firefighterId}`);
+        console.log(
+          `Firefighter joined personal room: ${data.firefighterId}`
+        );
+      }
+    });
+
+    // Rescue team joins personal disaster-warning room
+    socket.on("join_rescue_team", (data) => {
+      if (data?.rescueTeamId) {
+        socket.join(`rescue_team_${data.rescueTeamId}`);
+        console.log(
+          `Rescue team joined personal room: ${data.rescueTeamId}`
+        );
       }
     });
 

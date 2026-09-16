@@ -43,6 +43,7 @@ const seedResponders = async () => {
                 mobile: "9876500001",
                 email: "arun.ff@example.com",
                 station: station._id,
+                districtCode: "526",
                 specialization: [
                     "FLOOD_RESCUE",
                     "WATER_RESCUE"
@@ -59,6 +60,7 @@ const seedResponders = async () => {
                 mobile: "9876500002",
                 email: "rahul.ff@example.com",
                 station: station._id,
+                districtCode: "526",
                 specialization: [
                     "SEARCH_AND_RESCUE",
                     "COLLAPSE_RESCUE"
@@ -82,11 +84,13 @@ const seedResponders = async () => {
                 firefighter = await Firefighter.create(data);
                 console.log(`✅ Firefighter created: ${data.name}`);
             } else {
+                firefighter.districtCode = data.districtCode;
+                await firefighter.save();
+
                 console.log(
-                    `ℹ️ Firefighter already exists: ${data.name}`
+                    `ℹ️ Firefighter already exists: ${data.name} — district updated`
                 );
             }
-
             firefighters.push(firefighter);
         }
 
@@ -101,6 +105,7 @@ const seedResponders = async () => {
                 teamName: "Central Flood Rescue Team",
                 teamCode: "RT-BLR-001",
                 station: station._id,
+                districtCode: "526",
                 members: firefighters.map(
                     firefighter => firefighter._id
                 ),
@@ -119,7 +124,12 @@ const seedResponders = async () => {
 
             console.log("✅ Rescue team created");
         } else {
-            console.log("ℹ️ Rescue team already exists");
+            rescueTeam.districtCode = "526";
+            await rescueTeam.save();
+
+            console.log(
+                "ℹ️ Rescue team already exists — district updated"
+            );
         }
 
 

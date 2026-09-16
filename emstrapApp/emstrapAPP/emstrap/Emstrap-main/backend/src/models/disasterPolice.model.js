@@ -28,10 +28,20 @@ const disasterPoliceSchema = new mongoose.Schema(
             lowercase: true,
             trim: true
         },
+        password: {
+            type: String,
+            select: false
+        },
 
         station: {
             type: String,
             required: true,
+            trim: true
+        },
+
+        districtCode: {
+            type: String,
+            default: null,
             trim: true
         },
 

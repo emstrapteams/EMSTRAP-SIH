@@ -32,6 +32,10 @@ const firefighterSchema = new mongoose.Schema(
             lowercase: true,
             trim: true
         },
+        password: {
+            type: String,
+            select: false
+        },
 
         station: {
             type: mongoose.Schema.Types.ObjectId,
@@ -43,6 +47,12 @@ const firefighterSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "RescueTeam",
             default: null
+        },
+
+        districtCode: {
+            type: String,
+            default: null,
+            trim: true
         },
 
         specialization: {

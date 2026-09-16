@@ -16,7 +16,8 @@ const notificationSchema = new mongoose.Schema(
                 "RESCUE_TEAM",
                 "POLICE",
                 "HOSPITAL",
-                "ADMIN"
+                "ADMIN",
+                "DRIVER"
             ],
             required: true
         },

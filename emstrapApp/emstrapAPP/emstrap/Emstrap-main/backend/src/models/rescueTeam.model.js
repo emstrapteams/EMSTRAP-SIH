@@ -15,11 +15,21 @@ const rescueTeamSchema = new mongoose.Schema(
             unique: true,
             trim: true
         },
+        password: {
+            type: String,
+            select: false
+        },
 
         station: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "FireStation",
             required: true
+        },
+
+        districtCode: {
+            type: String,
+            default: null,
+            trim: true
         },
 
         members: [
