@@ -1,5 +1,5 @@
 import express from "express";
-import optionalAuth from "../middlewares/optionalAuth.middleware.js";
+import disasterAuth from "../middlewares/disasterAuth.middleware.js";
 
 import {
     updateResponderStatus
@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.put(
     "/status",
-    optionalAuth,
+    disasterAuth,
     updateResponderStatus
 );
 

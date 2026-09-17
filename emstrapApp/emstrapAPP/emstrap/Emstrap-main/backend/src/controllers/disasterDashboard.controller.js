@@ -3,6 +3,7 @@ import ResponseUpdate from "../models/responseUpdate.model.js";
 import FireStation from "../models/fireStation.model.js";
 import Firefighter from "../models/firefighter.model.js";
 import RescueTeam from "../models/rescueTeam.model.js";
+import FireVehicle from "../models/fireVehicle.model.js";
 
 const ACTIVE_EMERGENCY_STATUSES = [
     "EMERGENCY_SENT",
@@ -32,6 +33,7 @@ const emergencySummary = (emergency) => ({
     assignedFirefighter: emergency.assignedFirefighter || null,
     assignedPolice: emergency.assignedPolice || null,
     assignedHospital: emergency.assignedHospital || null,
+    assignedVehicles: emergency.assignedVehicles || [],
     reportedBy: emergency.reportedBy || null,
     createdAt: emergency.createdAt,
     updatedAt: emergency.updatedAt,
@@ -197,6 +199,23 @@ export const getFireStationDashboard = async (req, res) => {
         }).sort({ createdAt: -1 }).limit(50);
 
         const emergencyIds = stationEmergencies.map((item) => item._id);
+        const dayStart = new Date();
+        dayStart.setHours(0, 0, 0, 0);
+        const [vehicles, todaysIncidents, dispatchedUnits] = await Promise.all([
+            FireVehicle.find({ station: station._id })
+                .populate("crew", "name employeeId availability")
+                .populate("currentEmergency", "disasterType status location")
+                .sort({ vehicleNumber: 1 }),
+            DisasterEmergency.countDocuments({
+                $or: [
+                    { assignedFirefighter: { $in: firefighterIds } },
+                    { assignedRescueTeam: { $in: rescueTeamIds } },
+                ],
+                createdAt: { $gte: dayStart },
+                status: { $ne: "CANCELLED" },
+            }),
+            FireVehicle.countDocuments({ station: station._id, status: "DISPATCHED" }),
+        ]);
         const recentUpdates = await ResponseUpdate.find({
             emergency: { $in: emergencyIds }
         }).sort({ createdAt: -1 }).limit(20);
@@ -237,6 +256,7 @@ export const getFireStationDashboard = async (req, res) => {
                     currentEmergency: team.currentEmergency || null,
                     memberCount: team.members?.length || 0,
                 })),
+                vehicles,
                 activeEmergencies: stationEmergencies.filter((emergency) => ACTIVE_EMERGENCY_STATUSES.includes(emergency.status)).map(emergencySummary),
                 recentUpdates: mappedRecentUpdates,
                 stats: {
@@ -244,6 +264,9 @@ export const getFireStationDashboard = async (req, res) => {
                     active: stationEmergencies.filter((item) => ACTIVE_EMERGENCY_STATUSES.includes(item.status)).length,
                     resolved: stationEmergencies.filter((item) => item.status === "RESOLVED").length,
                     critical: stationEmergencies.filter((item) => item.severity === "CRITICAL").length,
+                    todaysIncidents,
+                    dispatchedUnits,
+                    availableVehicles: vehicles.filter((vehicle) => vehicle.status === "AVAILABLE").length,
                 },
             }
         });
