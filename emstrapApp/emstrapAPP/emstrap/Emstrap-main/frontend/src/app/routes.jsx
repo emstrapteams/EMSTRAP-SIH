@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+﻿import { Suspense, lazy } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import ProtectedRoute from "./ProtectedRoutes";
@@ -15,7 +15,7 @@ const VerifyEmail = lazy(() => import("../pages/auth/VerifyEmail"));
 const ForgotPassword = lazy(() => import("../pages/auth/ForgotPassword"));
 const ResetPassword = lazy(() => import("../pages/auth/ResetPassword"));
 const DriverHistory = lazy(() => import("../pages/ambulance/DriverHistory"));
-const PaymentPage = lazy(() => import("../pages/payment/PaymentPage")); // ⚠️ confirm this path matches your folder structure
+const PaymentPage = lazy(() => import("../pages/payment/PaymentPage")); // âš ï¸ confirm this path matches your folder structure
 
 const AdminDashboard = lazy(() => import("../pages/admin/AdminDashboard"));
 const AdminUsers = lazy(() => import("../pages/admin/AdminUsers"));
@@ -36,6 +36,7 @@ const PoliceDashboard = lazy(() => import("../pages/Police/PoliceDashboard"));
 const LiveMap = lazy(() => import("../pages/Police/LiveMap"));
 const PoliceSettings = lazy(() => import("../pages/Police/PoliceSettings"));
 const RescuePage = lazy(() => import("../pages/rescue/RescuePage"));
+const FireStationPage = lazy(() => import("../pages/firestation/FireStationPage"));
 
 function HomePage() {
   const { user, loading } = useAuth();
@@ -75,7 +76,7 @@ export default function AppRoutes() {
     <Suspense fallback={
       <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="animate-pulse flex flex-col items-center">
-          <div className="text-4xl mb-4">🚑</div>
+          <div className="text-4xl mb-4">ðŸš‘</div>
           <div className="text-xl font-semibold text-gray-700 dark:text-gray-300">Loading Emstrap...</div>
         </div>
       </div>
@@ -184,7 +185,11 @@ export default function AppRoutes() {
           <Route index element={<PoliceDashboard />} />
           <Route path="map" element={<LiveMap />} />
           <Route path="settings" element={<PoliceSettings />} />
-        </Route>    <Route path="/rescue" element={<RescuePage />} />`r`n  </Routes>
+        </Route>
+        <Route path="/rescue" element={<RescuePage />} />
+        <Route path="/fire-station" element={<FireStationPage />} />
+      </Routes>
     </Suspense>
   );
 }
+
