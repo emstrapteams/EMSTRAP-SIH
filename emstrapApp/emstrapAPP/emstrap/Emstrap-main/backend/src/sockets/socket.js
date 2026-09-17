@@ -237,6 +237,13 @@ export const initSocket = (server) => {
       }
     });
 
+    socket.on("join_fire_station", (data) => {
+      if (data?.stationId) {
+        socket.join(`station_${data.stationId}`);
+        console.log(`Fire station joined: ${data.stationId}`);
+      }
+    });
+
     socket.on("disconnecting", (reason) => {
       console.log("❌ Socket disconnecting:", socket.id, "reason:", reason, "rooms before disconnect:", [...socket.rooms]);
     });

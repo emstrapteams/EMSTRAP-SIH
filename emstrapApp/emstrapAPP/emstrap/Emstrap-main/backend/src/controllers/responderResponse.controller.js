@@ -1,5 +1,10 @@
 import DisasterEmergency from "../models/disasterEmergency.model.js";
 import ResponseUpdate from "../models/responseUpdate.model.js";
+import Firefighter from "../models/firefighter.model.js";
+import RescueTeam from "../models/rescueTeam.model.js";
+import FireVehicle from "../models/fireVehicle.model.js";
+import { getIO } from "../sockets/socket.js";
+import { getStationForDisasterUser, stationResponderIds } from "../services/fireStationAccess.service.js";
 
 
 const STATUS_FLOW = {
@@ -29,8 +34,23 @@ export const updateResponderStatus = async (req, res) => {
             });
         }
 
-        const emergency =
-            await DisasterEmergency.findById(emergencyId);
+        if (!req.user || !["FIREFIGHTER", "RESCUE_TEAM"].includes(req.user.role)) {
+            return res.status(403).json({ success: false, message: "Fire Station or Rescue Team authentication is required." });
+        }
+
+        const station = await getStationForDisasterUser(req.user);
+        if (!station) {
+            return res.status(404).json({ success: false, message: "No fire station context found for the authenticated user." });
+        }
+
+        const { firefighterIds, rescueTeamIds } = stationResponderIds(station);
+        const emergency = await DisasterEmergency.findOne({
+            _id: emergencyId,
+            $or: [
+                { assignedFirefighter: { $in: firefighterIds } },
+                { assignedRescueTeam: { $in: rescueTeamIds } },
+            ],
+        });
 
         if (!emergency) {
             return res.status(404).json({
@@ -40,23 +60,9 @@ export const updateResponderStatus = async (req, res) => {
         }
 
 
-        /*
-         * Determine who is making the update.
-         *
-         * For now the responder identity can come from
-         * req.user when responder authentication is added.
-         *
-         * During development, the assigned rescue team is
-         * used when available.
-         */
-        let responderType = "RESCUE_TEAM";
-        let responderId = emergency.assignedRescueTeam;
+        const responderType = req.user.role;
+        const responderId = req.user._id;
 
-
-        /*
-         * Make sure the requested status is a valid
-         * next step in the emergency lifecycle.
-         */
         const allowedNextStatuses =
             STATUS_FLOW[emergency.status] || [];
 
@@ -69,17 +75,11 @@ export const updateResponderStatus = async (req, res) => {
         }
 
 
-        /*
-         * Update emergency status.
-         */
         emergency.status = status;
 
         await emergency.save();
 
 
-        /*
-         * Add response timeline entry.
-         */
         const update = await ResponseUpdate.create({
             emergency: emergency._id,
 
@@ -93,16 +93,30 @@ export const updateResponderStatus = async (req, res) => {
                 message ||
                 `Responder updated emergency to ${status}`,
 
-            location: {
-                latitude:
-                    location?.latitude ??
-                    null,
-
-                longitude:
-                    location?.longitude ??
-                    null
-            }
+            location: location || emergency.location,
         });
+
+        if (status === "RESOLVED") {
+            await Promise.all([
+                emergency.assignedFirefighter
+                    ? Firefighter.findByIdAndUpdate(emergency.assignedFirefighter, { availability: "AVAILABLE", currentEmergency: null })
+                    : null,
+                emergency.assignedRescueTeam
+                    ? RescueTeam.findByIdAndUpdate(emergency.assignedRescueTeam, { availability: "AVAILABLE", currentEmergency: null })
+                    : null,
+                FireVehicle.updateMany({ currentEmergency: emergency._id }, { status: "AVAILABLE", currentEmergency: null }),
+            ]);
+        }
+
+        try {
+            getIO().to(`station_${station._id}`).emit("fire_station_updated", {
+                type: "emergency_status_changed",
+                emergencyId: emergency._id,
+                status,
+            });
+        } catch {
+            // REST remains authoritative when Socket.IO is unavailable.
+        }
 
 
         /*

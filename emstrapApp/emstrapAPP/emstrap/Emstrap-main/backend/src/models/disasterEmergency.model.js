@@ -92,6 +92,13 @@ const disasterEmergencySchema = new mongoose.Schema(
             default: null,
         },
 
+        assignedVehicles: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "FireVehicle",
+            },
+        ],
+
         patientIds: [
             {
                 type: mongoose.Schema.Types.ObjectId,

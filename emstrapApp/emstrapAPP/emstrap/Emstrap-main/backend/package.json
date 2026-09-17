@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
     "build": "echo 'No build step required'",
-    "dev": "nodemon server"
+    "dev": "nodemon server",
+    "seed:firestation": "node src/scripts/seedFireStationDemo.js"
   },
   "repository": {
     "type": "git",
