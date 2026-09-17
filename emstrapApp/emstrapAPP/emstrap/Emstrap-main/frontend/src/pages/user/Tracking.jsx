@@ -7,7 +7,6 @@ import Navbar from "../../components/layout/Navbar";
 import Container from "../../components/layout/Container";
 import LiveTrackingMap from "../../components/map/LiveTrackingMap";
 import { Navigation } from "lucide-react";
-import EmergencyHeader from "../src/components/common/EmergencyHeader";
 const getGoogleMapsUrl = (driverInfo, userLocation) => {
   if (!driverInfo?.location) return "";
   const startLat = driverInfo.location.lat;
